@@ -2,7 +2,7 @@
     "name": "autolanguage-vscode",
     "displayName": "Auto Language",
     "description": "Automatically switches keyboard language based on context (Arabic/English).",
-    "version": "26.1.3",
+    "version": "26.1.5",
     "publisher": "basheir",
     "icon": "resources/icon.png",
     "icons": {
