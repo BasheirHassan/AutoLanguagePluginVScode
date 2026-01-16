@@ -2,8 +2,31 @@
     "name": "autolanguage-vscode",
     "displayName": "Auto Language",
     "description": "Automatically switches keyboard language based on context (Arabic/English).",
-    "version": "26.1.2",
+    "version": "26.1.3",
     "publisher": "basheir",
+    "icon": "resources/icon.png",
+    "icons": {
+        "default": {
+            "dark": "resources/icon.png",
+            "light": "resources/icon.png"
+        },
+        "16": {
+            "dark": "resources/logo-16x16.png",
+            "light": "resources/logo-16x16.png"
+        },
+        "32": {
+            "dark": "resources/logo-32x32.png",
+            "light": "resources/logo-32x32.png"
+        },
+        "64": {
+            "dark": "resources/logo-64x64.png",
+            "light": "resources/logo-64x64.png"
+        },
+        "128": {
+            "dark": "resources/icon.png",
+            "light": "resources/icon.png"
+        }
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/basheir/autolanguage-vscode.git"
