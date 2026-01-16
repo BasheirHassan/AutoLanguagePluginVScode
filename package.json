@@ -2,7 +2,7 @@
     "name": "autolanguage-vscode",
     "displayName": "Auto Language",
     "description": "تغير اللغة بشكل الي حسب السياق (Arabic/English).",
-    "version": "26.1.9",
+    "version": "26.1.12",
     "publisher": "basheir",
     "icon": "resources/icon.png",
     "icons": {
