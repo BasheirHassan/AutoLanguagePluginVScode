@@ -1,6 +1,9 @@
 import * as vscode from 'vscode';
 import { exec } from 'child_process';
 import { promisify } from 'util';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as os from 'os';
 
 const execAsync = promisify(exec);
 
@@ -8,8 +11,6 @@ let lastLanguage: 'Arabic' | 'English' | 'None' = 'None';
 let statusBarItem: vscode.StatusBarItem;
 
 export function activate(context: vscode.ExtensionContext) {
-    console.log('Auto Language  is now active!');
-
     statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
     context.subscriptions.push(statusBarItem);
     updateStatusBar('Ready', 'None', 'None');
@@ -44,8 +45,13 @@ export function activate(context: vscode.ExtensionContext) {
                     vscode.window.showInformationMessage(`Language Switched to ${lang} ${flag}`);
                 }
             } catch (err) {
-                console.error('Failed to switch language:', err);
-                vscode.window.showErrorMessage('Auto Language: Failed to switch keyboard layout.');
+                const errorMessage = err instanceof Error ? err.message : String(err);
+                // عرض رسالة خطأ مفصلة للمستخدم
+                if (errorMessage.includes('not installed')) {
+                    vscode.window.showErrorMessage(`Auto Language: ${errorMessage} Please add the keyboard layout in Windows Settings.`);
+                } else {
+                    vscode.window.showErrorMessage(`Auto Language: ${errorMessage}`);
+                }
             }
         }
         
@@ -113,11 +119,22 @@ function detectLanguageAround(document: vscode.TextDocument, offset: number): { 
 
 function isArabic(c: string): boolean {
     const code = c.charCodeAt(0);
+    // نطاقات اليونيكود العربية الكاملة:
+    // 0x0600-0x06FF: العربية الأساسية
+    // 0x0750-0x077F: العربية التكميلية
+    // 0x08A0-0x08FF: العربية الموسعة A
+    // 0xFB50-0xFDFF: أشكال العرض العربية
+    // 0xFE70-0xFEFF: أشكال العرض العربية للنصوص
+    // 0x0860-0x086F: العربية الموسعة B (السندية)
+    // 0x08A0-0x08FF: العربية الموسعة A
+    // 0x1EE00-0x1EEFF: أشكال العرض العربية الرياضية
     return (code >= 0x0600 && code <= 0x06FF) ||
            (code >= 0x0750 && code <= 0x077F) ||
            (code >= 0x08A0 && code <= 0x08FF) ||
            (code >= 0xFB50 && code <= 0xFDFF) ||
-           (code >= 0xFE70 && code <= 0xFEFF);
+           (code >= 0xFE70 && code <= 0xFEFF) ||
+           (code >= 0x0860 && code <= 0x086F) ||
+           (code >= 0x1EE00 && code <= 0x1EEFF);
 }
 
 function isEnglish(c: string): boolean {
@@ -133,10 +150,13 @@ async function switchToEnglish() {
 }
 
 async function runPowerShellSwitch(target: 'Arabic' | 'English') {
-    const langId = target === 'Arabic' ? '0x01' : '0x09';
+    // معرفات اللغة الصحيحة في Windows:
+    // العربية: Primary Language ID = 0x01 (1)
+    // الإنجليزية (الأمريكية): Primary Language ID = 0x09 (9)
+    const primaryLangId = target === 'Arabic' ? '0x01' : '0x09';
+    
     // This script finds a layout with the primary language ID and posts the change request to the foreground window.
-    const psScript = `
-Add-Type -TypeDefinition @"
+    const psScript = `Add-Type -TypeDefinition @"
 using System;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
@@ -158,7 +178,7 @@ public class KeyboardLayout {
         int count = GetKeyboardLayoutList(16, layouts);
         for (int i = 0; i < count; i++) {
             uint langId = (uint)layouts[i].ToInt64() & 0xFFFF;
-            uint primaryId = langId & 0x3FF;
+            uint primaryId = langId & 0x03FF;
             if (primaryId == targetPrimaryId) return layouts[i];
         }
         return IntPtr.Zero;
@@ -166,14 +186,44 @@ public class KeyboardLayout {
 }
 "@
 $hwnd = [KeyboardLayout]::GetForegroundWindow()
-$layout = [KeyboardLayout]::FindLayout(${langId})
+$layout = [KeyboardLayout]::FindLayout(${primaryLangId})
 if ($layout -ne [IntPtr]::Zero) {
     [KeyboardLayout]::PostMessage($hwnd, [KeyboardLayout]::WM_INPUTLANGCHANGEREQUEST, [IntPtr]::Zero, $layout)
-}
-`;
-    // Minify the script for exec
-    const command = `powershell -Command "${psScript.replace(/\n/g, ' ').replace(/"/g, '\\"')}"`;
-    await execAsync(command);
+} else {
+    Write-Error "Keyboard layout for ${target} (ID: ${primaryLangId}) not found. Please ensure the keyboard layout is installed."
+}`;
+    
+    // إنشاء ملف ps1 مؤقت لتجنب مشاكل cmd.exe
+    const tempDir = os.tmpdir();
+    const tempScriptPath = path.join(tempDir, `autolanguage_switch_${Date.now()}.ps1`);
+    
+    try {
+        // كتابة السكريبت إلى ملف مؤقت
+        fs.writeFileSync(tempScriptPath, psScript, 'utf8');
+        
+        // تنفيذ الملف
+        const command = `powershell -ExecutionPolicy Bypass -File "${tempScriptPath}"`;
+        const { stderr } = await execAsync(command);
+        
+        if (stderr) {
+            // تحقق إذا كان الخطأ بسبب عدم وجود تخطيط لوحة المفاتيح
+            if (stderr.includes('not found') || stderr.includes('not installed')) {
+                throw new Error(`Keyboard layout for ${target} is not installed on your system.`);
+            }
+        }
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        throw new Error(`Failed to switch to ${target}: ${errorMessage}`);
+    } finally {
+        // حذف الملف المؤقت
+        try {
+            if (fs.existsSync(tempScriptPath)) {
+                fs.unlinkSync(tempScriptPath);
+            }
+        } catch (cleanupError) {
+            // تجاهل خطأ حذف الملف المؤقت
+        }
+    }
 }
 
 function updateStatusBar(status: string, char: string, lang: string) {
