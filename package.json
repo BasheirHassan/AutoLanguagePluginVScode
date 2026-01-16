@@ -1,0 +1,63 @@
+{
+    "name": "autolanguage-vscode",
+    "displayName": "Auto Language",
+    "description": "Automatically switches keyboard language based on context (Arabic/English).",
+    "version": "1.0.0",
+    "publisher": "basheir",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/basheir/autolanguage-vscode.git"
+    },
+    "engines": {
+        "vscode": "^1.75.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "autolanguage.toggle",
+                "title": "Auto Language: Toggle Enabled"
+            }
+        ],
+        "configuration": {
+            "title": "Auto Language",
+            "properties": {
+                "autolanguage.enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable/Disable automatic language switching."
+                },
+                "autolanguage.showNotifications": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Show notification when language is switched."
+                },
+                "autolanguage.showStatusBar": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Show status in status bar."
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTest.js",
+        "package":"vsce package"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.75.0",
+        "@types/node": "16.x",
+        "typescript": "^4.9.5"
+    }
+}
