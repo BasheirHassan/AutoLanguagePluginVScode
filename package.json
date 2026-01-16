@@ -1,15 +1,11 @@
 {
     "name": "autolanguage-vscode",
     "displayName": "Auto Language",
-    "description": "Automatically switches keyboard language based on context (Arabic/English).",
-    "version": "26.1.6",
+    "description": "تغير اللغة بشكل الي حسب السياق (Arabic/English).",
+    "version": "26.1.9",
     "publisher": "basheir",
     "icon": "resources/icon.png",
     "icons": {
-        "default": {
-            "dark": "resources/icon.png",
-            "light": "resources/icon.png"
-        },
         "16": {
             "dark": "resources/logo-16x16.png",
             "light": "resources/logo-16x16.png"
@@ -23,6 +19,10 @@
             "light": "resources/logo-64x64.png"
         },
         "128": {
+            "dark": "resources/icon.png",
+            "light": "resources/icon.png"
+        },
+        "default": {
             "dark": "resources/icon.png",
             "light": "resources/icon.png"
         }
@@ -86,7 +86,11 @@
         "pretest": "npm run compile && npm run lint",
         "lint": "eslint src --ext ts",
         "test": "node ./out/test/runTest.js",
-        "package":"vsce package"
+        "version:patch": "node -e \"const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('package.json')); const v=pkg.version.split('.'); v[2]=parseInt(v[2])+1; pkg.version=v.join('.'); fs.writeFileSync('package.json', JSON.stringify(pkg, null, 4));\"",
+        "version:minor": "node -e \"const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('package.json')); const v=pkg.version.split('.'); v[1]=parseInt(v[1])+1; v[2]=0; pkg.version=v.join('.'); fs.writeFileSync('package.json', JSON.stringify(pkg, null, 4));\"",
+        "version:major": "node -e \"const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('package.json')); const v=pkg.version.split('.'); v[0]=parseInt(v[0])+1; v[1]=0; v[2]=0; pkg.version=v.join('.'); fs.writeFileSync('package.json', JSON.stringify(pkg, null, 4));\"",
+        "package": "npm run version:patch && npm run compile && vsce package",
+        "publish": "npm run version:patch && npm run compile && vsce publish"
     },
     "devDependencies": {
         "@types/vscode": "^1.75.0",
