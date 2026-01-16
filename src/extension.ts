@@ -233,7 +233,17 @@ function updateStatusBar(status: string, char: string, lang: string) {
         return;
     }
 
-    statusBarItem.text = `$(globe) AutoLang: ${lang === 'None' ? '...' : lang}`;
+    // استخدام رمز مناسب للغة مع علم الدولة
+    let icon: string;
+    if (lang === 'Arabic') {
+        icon = '🇸🇦';
+    } else if (lang === 'English') {
+        icon = '🇺🇸';
+    } else {
+        icon = '🌐';
+    }
+    
+    statusBarItem.text = `${icon} AutoLang: ${lang === 'None' ? '...' : lang}`;
     statusBarItem.tooltip = `Status: ${status}\nDetected: ${char}\nLanguage: ${lang}`;
     statusBarItem.show();
 }

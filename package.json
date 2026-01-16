@@ -2,7 +2,7 @@
     "name": "autolanguage-vscode",
     "displayName": "Auto Language",
     "description": "Automatically switches keyboard language based on context (Arabic/English).",
-    "version": "26.1.5",
+    "version": "26.1.6",
     "publisher": "basheir",
     "icon": "resources/icon.png",
     "icons": {
@@ -46,6 +46,16 @@
             {
                 "command": "autolanguage.toggle",
                 "title": "Auto Language: Toggle Enabled"
+            }
+        ],
+        "statusBar": [
+            {
+                "id": "autolanguage.status",
+                "name": "Auto Language Status",
+                "alignment": "right",
+                "priority": 100,
+                "text": "$(globe) AutoLang: ...",
+                "tooltip": "Auto Language Status"
             }
         ],
         "configuration": {
