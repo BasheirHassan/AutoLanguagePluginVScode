@@ -41,8 +41,9 @@ export function activate(context: vscode.ExtensionContext) {
                 lastLanguage = lang;
                 
                 if (settings.get('showNotifications')) {
-                    const flag = lang === 'Arabic' ? '🇸🇦' : '🇺🇸';
-                    vscode.window.showInformationMessage(`Language Switched to ${lang} ${flag}`);
+                    const icon = lang === 'Arabic' ? '$(symbol-namespace)' : '$(symbol-enum)';
+                    const translate = lang === "Arabic" ? "تم تغيير اللغة الى العربية" : 'Language Switched to English'
+                    vscode.window.showInformationMessage(`${translate}`);
                 }
             } catch (err) {
                 const errorMessage = err instanceof Error ? err.message : String(err);
@@ -233,14 +234,14 @@ function updateStatusBar(status: string, char: string, lang: string) {
         return;
     }
 
-    // استخدام رمز مناسب للغة مع علم الدولة
+    // استخدام أيقونات Codicons من VSCode
     let icon: string;
     if (lang === 'Arabic') {
-        icon = '🇸🇦';
+        icon = '$(symbol-namespace)';
     } else if (lang === 'English') {
-        icon = '🇺🇸';
+        icon = '$(symbol-enum)';
     } else {
-        icon = '🌐';
+        icon = '$(globe)';
     }
     
     statusBarItem.text = `${icon} AutoLang: ${lang === 'None' ? '...' : lang}`;
