@@ -1,8 +1,8 @@
 {
-    "name": "autolanguage-vscode",
+    "name": "autolanguagepluginvscode",
     "displayName": "Auto Language",
     "description": "تغير اللغة بشكل الي حسب السياق (Arabic/English).",
-    "version": "26.1.3",
+    "version": "26.1.5",
     "publisher": "BasheirHassan",
     "icon": "resources/icon.png",
     "icons": {
@@ -29,7 +29,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/basheir/autolanguage-vscode.git"
+        "url": "https://github.com/BasheirHassan/AutoLanguagePluginVScode.git"
     },
     "engines": {
         "vscode": "^1.75.0"
