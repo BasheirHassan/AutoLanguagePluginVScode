@@ -2,8 +2,8 @@
     "name": "autolanguage-vscode",
     "displayName": "Auto Language",
     "description": "تغير اللغة بشكل الي حسب السياق (Arabic/English).",
-    "version": "26.1.14",
-    "publisher": "Basheir Hassan",
+    "version": "26.1.3",
+    "publisher": "BasheirHassan",
     "icon": "resources/icon.png",
     "icons": {
         "16": {
@@ -34,6 +34,18 @@
     "engines": {
         "vscode": "^1.75.0"
     },
+    "keywords": [
+        "auto language",
+        "language switcher",
+        "automatic language",
+        "language detection",
+        "bilingual",
+        "Arabic",
+        "English",
+        "language context",
+        "multilingual",
+        "localization"
+    ],
     "categories": [
         "Other"
     ],
