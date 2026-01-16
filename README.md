@@ -2,8 +2,7 @@
 
  <p>Twitter: <a href="https://x.com/BasheirHassan">@BasheirHassan</a></p>
 
-
-<p>Marketplace: <a href=" https://marketplace.visualstudio.com/items?itemName=BasheirHassan.autolanguage-vscode">Marketplace</a></p>
+<a href="https://marketplace.visualstudio.com/items?itemName=BasheirHassan.autolanguage-vscode">Marketplace</a>
 
 هذه الإضافة تقوم بتبديل لغة لوحة المفاتيح تلقائياً بناءً على سياق النص الذي تكتب فيه (عربي أو إنجليزي).
 
