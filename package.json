@@ -1,112 +1,112 @@
 {
-  "name": "autolanguagepluginvscode",
-  "displayName": "Auto Language",
-  "description": "تغير اللغة بشكل الي حسب السياق (Arabic/English).",
-  "version": "26.1.12",
-  "publisher": "BasheirHassan",
-  "icon": "resources/icon.png",
-  "icons": {
-    "16": {
-      "dark": "resources/logo-16x16.png",
-      "light": "resources/logo-16x16.png"
-    },
-    "32": {
-      "dark": "resources/logo-32x32.png",
-      "light": "resources/logo-32x32.png"
-    },
-    "64": {
-      "dark": "resources/logo-64x64.png",
-      "light": "resources/logo-64x64.png"
-    },
-    "128": {
-      "dark": "resources/icon.png",
-      "light": "resources/icon.png"
-    },
-    "default": {
-      "dark": "resources/icon.png",
-      "light": "resources/icon.png"
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/BasheirHassan/AutoLanguagePluginVScode.git"
-  },
-  "engines": {
-    "vscode": "^1.75.0"
-  },
-  "keywords": [
-    "auto language",
-    "language switcher",
-    "automatic language",
-    "language detection",
-    "bilingual",
-    "Arabic",
-    "English",
-    "language context",
-    "multilingual",
-    "localization"
-  ],
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "onStartupFinished"
-  ],
-  "main": "./out/extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "autolanguage.toggle",
-        "title": "Auto Language: Toggle Enabled"
-      }
-    ],
-    "statusBar": [
-      {
-        "id": "autolanguage.status",
-        "name": "Auto Language Status",
-        "alignment": "right",
-        "priority": 100,
-        "text": "$(globe) AutoLang: ...",
-        "tooltip": "Auto Language Status"
-      }
-    ],
-    "configuration": {
-      "title": "Auto Language",
-      "properties": {
-        "autolanguage.enabled": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable/Disable automatic language switching."
+    "name": "autolanguagepluginvscode",
+    "displayName": "Auto Language",
+    "description": "تغير اللغة بشكل الي حسب السياق (Arabic/English).",
+    "version": "26.1.15",
+    "publisher": "BasheirHassan",
+    "icon": "resources/icon.png",
+    "icons": {
+        "16": {
+            "dark": "resources/logo-16x16.png",
+            "light": "resources/logo-16x16.png"
         },
-        "autolanguage.showNotifications": {
-          "type": "boolean",
-          "default": true,
-          "description": "Show notification when language is switched."
+        "32": {
+            "dark": "resources/logo-32x32.png",
+            "light": "resources/logo-32x32.png"
         },
-        "autolanguage.showStatusBar": {
-          "type": "boolean",
-          "default": true,
-          "description": "Show status in status bar."
+        "64": {
+            "dark": "resources/logo-64x64.png",
+            "light": "resources/logo-64x64.png"
+        },
+        "128": {
+            "dark": "resources/icon.png",
+            "light": "resources/icon.png"
+        },
+        "default": {
+            "dark": "resources/icon.png",
+            "light": "resources/icon.png"
         }
-      }
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/BasheirHassan/AutoLanguagePluginVScode.git"
+    },
+    "engines": {
+        "vscode": "^1.108.0"
+    },
+    "keywords": [
+        "auto language",
+        "language switcher",
+        "automatic language",
+        "language detection",
+        "bilingual",
+        "Arabic",
+        "English",
+        "language context",
+        "multilingual",
+        "localization"
+    ],
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "autolanguage.toggle",
+                "title": "Auto Language: Toggle Enabled"
+            }
+        ],
+        "statusBar": [
+            {
+                "id": "autolanguage.status",
+                "name": "Auto Language Status",
+                "alignment": "right",
+                "priority": 100,
+                "text": "$(globe) AutoLang: ...",
+                "tooltip": "Auto Language Status"
+            }
+        ],
+        "configuration": {
+            "title": "Auto Language",
+            "properties": {
+                "autolanguage.enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable/Disable automatic language switching."
+                },
+                "autolanguage.showNotifications": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Show notification when language is switched."
+                },
+                "autolanguage.showStatusBar": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Show status in status bar."
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTest.js",
+        "version:patch": "node -e \"const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('package.json')); const v=pkg.version.split('.'); v[2]=parseInt(v[2])+1; pkg.version=v.join('.'); fs.writeFileSync('package.json', JSON.stringify(pkg, null, 4));\"",
+        "version:minor": "node -e \"const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('package.json')); const v=pkg.version.split('.'); v[1]=parseInt(v[1])+1; v[2]=0; pkg.version=v.join('.'); fs.writeFileSync('package.json', JSON.stringify(pkg, null, 4));\"",
+        "version:major": "node -e \"const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('package.json')); const v=pkg.version.split('.'); v[0]=parseInt(v[0])+1; v[1]=0; v[2]=0; pkg.version=v.join('.'); fs.writeFileSync('package.json', JSON.stringify(pkg, null, 4));\"",
+        "package": "npm run version:patch && npm run compile && vsce package",
+        "publish": "npm run version:patch && npm run compile && vsce publish"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.108.1",
+        "@types/node": "16.x",
+        "typescript": "5.9.3"
     }
-  },
-  "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js",
-    "version:patch": "node -e \"const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('package.json')); const v=pkg.version.split('.'); v[2]=parseInt(v[2])+1; pkg.version=v.join('.'); fs.writeFileSync('package.json', JSON.stringify(pkg, null, 4));\"",
-    "version:minor": "node -e \"const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('package.json')); const v=pkg.version.split('.'); v[1]=parseInt(v[1])+1; v[2]=0; pkg.version=v.join('.'); fs.writeFileSync('package.json', JSON.stringify(pkg, null, 4));\"",
-    "version:major": "node -e \"const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('package.json')); const v=pkg.version.split('.'); v[0]=parseInt(v[0])+1; v[1]=0; v[2]=0; pkg.version=v.join('.'); fs.writeFileSync('package.json', JSON.stringify(pkg, null, 4));\"",
-    "package": "npm run version:patch && npm run compile && vsce package",
-    "publish": "npm run version:patch && npm run compile && vsce publish"
-  },
-  "devDependencies": {
-    "@types/vscode": "^1.108.1",
-    "@types/node": "16.x",
-    "typescript": "5.9.3"
-  }
 }
